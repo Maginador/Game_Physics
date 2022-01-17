@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PhysicsEngine : MonoBehaviour {
-    public float mass = 1f;
-    public Vector3 velocityVector;  // average velocity this FixedUpdate()
-    public Vector3 netForceVector;
-    public List<Vector3> forceVectorList = new List<Vector3>();
+    public float mass = 1f;         //[kg]
+    public Vector3 velocityVector;  //[m sˆ1]
+    public Vector3 netForceVector;  //N [kg m s^-2]
+    private List<Vector3> _forceVectorList = new List<Vector3>();
 
     // Use this for initialization
     void Start ()
@@ -19,28 +19,27 @@ public class PhysicsEngine : MonoBehaviour {
         RenderTrails();
         SumForces ();
         UpdateVelocity ();
-        // Update position
     }
 
     public void AddFOrce(Vector3 force)
     {
-        forceVectorList.Add(force);
+        _forceVectorList.Add(force);
     }
+
     void SumForces () {
         netForceVector = Vector3.zero;
 		
-        foreach (Vector3 forceVector in forceVectorList) {
+        foreach (Vector3 forceVector in _forceVectorList) {
             netForceVector = netForceVector + forceVector;
         }
 
-        forceVectorList = new List<Vector3>();
+        _forceVectorList = new List<Vector3>();
     }
 	
     void UpdateVelocity () {
         Vector3 accelerationVector = netForceVector / mass;
         velocityVector += accelerationVector * Time.deltaTime;
         transform.position += velocityVector * Time.deltaTime;
-
     }
     
     
@@ -48,32 +47,31 @@ public class PhysicsEngine : MonoBehaviour {
     /// Draw Trails code
     /// </summary>
     public bool showTrails = true;
-    private LineRenderer lineRenderer;
-    private int numberOfForces;
-	
+    private LineRenderer _lineRenderer;
+    private int _numberOfForces;
     // Use this for initialization
     void SetupTrails () {
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.SetColors(Color.yellow, Color.yellow);
-        lineRenderer.SetWidth(0.2F, 0.2F);
-        lineRenderer.useWorldSpace = false;
+        _lineRenderer = gameObject.AddComponent<LineRenderer>();
+        _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        _lineRenderer.SetColors(Color.yellow, Color.yellow);
+        _lineRenderer.SetWidth(0.2F, 0.2F);
+        _lineRenderer.useWorldSpace = false;
     }
 	
     // Update is called once per frame
     void RenderTrails () {
         if (showTrails) {
-            lineRenderer.enabled = true;
-            numberOfForces = forceVectorList.Count;
-            lineRenderer.SetVertexCount(numberOfForces * 2);
+            _lineRenderer.enabled = true;
+            _numberOfForces = _forceVectorList.Count;
+            _lineRenderer.SetVertexCount(_numberOfForces * 2);
             int i = 0;
-            foreach (Vector3 forceVector in forceVectorList) {
-                lineRenderer.SetPosition(i, Vector3.zero);
-                lineRenderer.SetPosition(i+1, -forceVector);
+            foreach (Vector3 forceVector in _forceVectorList) {
+                _lineRenderer.SetPosition(i, Vector3.zero);
+                _lineRenderer.SetPosition(i+1, -forceVector);
                 i = i + 2;
             }
         } else {
-            lineRenderer.enabled = false;
+            _lineRenderer.enabled = false;
         }
     }
 }
