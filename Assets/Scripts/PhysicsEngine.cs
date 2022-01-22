@@ -8,7 +8,6 @@ public class PhysicsEngine : MonoBehaviour {
     public Vector3 netForceVector;  //N [kg m s^-2]
     private List<Vector3> _forceVectorList = new List<Vector3>();
 
-    // Use this for initialization
     void Start ()
     {
         SetupTrails();
@@ -49,7 +48,7 @@ public class PhysicsEngine : MonoBehaviour {
     public bool showTrails = true;
     private LineRenderer _lineRenderer;
     private int _numberOfForces;
-    // Use this for initialization
+
     void SetupTrails () {
         _lineRenderer = gameObject.AddComponent<LineRenderer>();
         _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -58,7 +57,6 @@ public class PhysicsEngine : MonoBehaviour {
         _lineRenderer.useWorldSpace = false;
     }
 	
-    // Update is called once per frame
     void RenderTrails () {
         if (showTrails) {
             _lineRenderer.enabled = true;

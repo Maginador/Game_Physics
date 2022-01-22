@@ -14,13 +14,6 @@ public class Cannon : MonoBehaviour
     [SerializeField] private float basePower;
     private float _finalRotation;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if(!_isShooting)

@@ -12,24 +12,22 @@ public class RocketEngine : MonoBehaviour
     public float thrustPercent;         //[none]
     public Vector3 thrustUnitVector;    //[none] 
     
-    private PhysicsEngine engine;
+    private PhysicsEngine _engine;
 
-    private float currentThrust; 
-    // Start is called before the first frame update
-    void Start()
+    private float _currentThrust; 
+    private void Start()
     {
-        engine = GetComponent<PhysicsEngine>();
-        engine.mass += fuelMass;
+        _engine = GetComponent<PhysicsEngine>();
+        _engine.mass += fuelMass;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (fuelMass > FuelThisUpdate())
         {
             fuelMass -= FuelThisUpdate();
-            engine.mass -= FuelThisUpdate();
-            ExtertForce();
+            _engine.mass -= FuelThisUpdate();
+            ExertForce();
         }
         else
         {
@@ -40,15 +38,15 @@ public class RocketEngine : MonoBehaviour
     private float FuelThisUpdate()
     {
         const float effectiveExhaustVelocity = 4462f;
-        var exhaustMassFlow = currentThrust / effectiveExhaustVelocity;
+        var exhaustMassFlow = _currentThrust / effectiveExhaustVelocity;
         return exhaustMassFlow * Time.deltaTime;
     }
 
-    private void ExtertForce()
+    private void ExertForce()
     {
-        currentThrust = thrustPercent * maxThrust * 1000f;
-        Vector3 thrustVector = thrustUnitVector.normalized * currentThrust; // N
-        engine.AddFOrce(thrustVector);
+        _currentThrust = thrustPercent * maxThrust * 1000f;
+        var thrustVector = thrustUnitVector.normalized * _currentThrust; // N
+        _engine.AddFOrce(thrustVector);
         
     }
 }

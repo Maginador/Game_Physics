@@ -10,22 +10,22 @@ public class FluidDrag : MonoBehaviour
 
     public float dragConstant;          //??
 
-    private PhysicsEngine engine; 
-    void Start()
+    private PhysicsEngine _engine; 
+    private void Start()
     {
-        engine = GetComponent<PhysicsEngine>();
+        _engine = GetComponent<PhysicsEngine>();
     }
 
     private void FixedUpdate()
     {
-        var velocityVector = engine.velocityVector;
+        var velocityVector = _engine.velocityVector;
         var speed = velocityVector.magnitude;
         var dragSize = CalculateDrag(speed);
         var dragVector = dragSize * -velocityVector.normalized;
-        engine.AddFOrce(dragVector);
+        _engine.AddFOrce(dragVector);
     }
 
-    float CalculateDrag(float velocity)
+    private float CalculateDrag(float velocity)
     {
         return dragConstant * Mathf.Pow(velocity, velocityExponent);
     }
