@@ -10,11 +10,11 @@ public class UniversalGravitation : MonoBehaviour
 
     private void Start ()
     {
-        _physicsEnginesArray = FindObjectsOfType<PhysicsEngine>();
     }
 
     private void FixedUpdate()
     {
+        _physicsEnginesArray = FindObjectsOfType<PhysicsEngine>();
         CalculateGravity();
     }
 
